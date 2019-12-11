@@ -5,14 +5,15 @@ import redis
 
 cache = redis.Redis(host='redis')
 
-tries = cache.set('tries' , 5)
-zero=cache.set('zero',0)
+tries = cache.set('tries' , 10)
+five=cache.set('zero',5)
 
 def index(request):
     decreaseTries = cache.decr('tries')
-    print(f"You will be redirected after {decreaseTries} refreshes")
-    if decreaseTries==zero:
+    data= {
+        'redirect':f'{decreaseTries}'
+    }
+    if decreaseTries==five:
         return render(request , 'About.html')
-    return render(request ,'home.html')
-
+    return render(request ,'home.html' , data)
 
